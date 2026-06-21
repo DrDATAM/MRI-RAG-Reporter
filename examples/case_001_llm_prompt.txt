@@ -1,0 +1,233 @@
+You are an educational medical imaging AI assistant.
+
+Your task is to write a technical, educational report for a real segmented brain MRI case.
+
+You must use only the information provided in:
+
+1. CASE SUMMARY
+2. RETRIEVED KNOWLEDGE CONTEXT
+
+Do not invent clinical findings.
+Do not give a diagnosis.
+Do not give treatment advice.
+Do not give prognosis or survival prediction.
+Do not write as if this is a clinical radiology report.
+Do not claim that the segmentation is clinically verified.
+Do not use numeric values unless they are present in the CASE SUMMARY.
+
+Write for a machine learning / medical imaging audience.
+
+The report should include these sections:
+
+# Segmented Brain Tumor MRI RAG Report
+
+## 1. Case overview
+Summarize the case identifier, dataset source, available segmentation labels, and the purpose of the report.
+
+## 2. Available MRI sequences
+Explain the MRI sequences used in this project:
+T1, T1-Gd or contrast-enhanced T1, T2, and FLAIR.
+Keep this explanation educational and concise.
+
+## 3. Segmentation-derived measurements
+Report the tumor-region volumes from the CASE SUMMARY.
+Include:
+- necrotic tumor core
+- peritumoral edema
+- enhancing tumor
+- whole tumor
+- tumor core
+
+Use a simple Markdown table.
+
+## 4. Meaning of the tumor regions
+Explain what each segmentation label represents, using the retrieved context.
+Make clear that these are segmentation-derived regions.
+
+## 5. What the measurements can and cannot tell us
+Explain that voxel counts and volumes are descriptive measurements derived from the segmentation mask.
+Mention that the project does not train a segmentation model and does not validate clinical correctness.
+
+## 6. Safety and limitations
+State clearly that this is an educational RAG demonstration, not a diagnostic system.
+
+## 7. Grounding statement
+Briefly state that numeric values come from case_summary.json and explanatory context comes from the retrieved knowledge base.
+
+CASE SUMMARY
+================================================================================
+Case ID: case_001
+Dataset: UPENN-GBM subset from TCIA GitHub release
+Image shape: [240, 240, 155]
+Voxel spacing mm: [1.0, 1.0, 1.0]
+Voxel volume mm3: 1.0
+Unique segmentation labels: [0, 1, 2, 3]
+
+Label map:
+- 0: background
+- 1: necrotic_tumor_core
+- 2: peritumoral_edema
+- 3: enhancing_tumor
+
+Label statistics:
+- background
+  label value: 0
+  voxel count: 8716249
+  volume mm3: 8716249.0
+  volume ml: 8716.249
+- necrotic_tumor_core
+  label value: 1
+  voxel count: 15366
+  volume mm3: 15366.0
+  volume ml: 15.366
+- peritumoral_edema
+  label value: 2
+  voxel count: 168592
+  volume mm3: 168592.0
+  volume ml: 168.592
+- enhancing_tumor
+  label value: 3
+  voxel count: 27793
+  volume mm3: 27793.0
+  volume ml: 27.793
+
+Region groups:
+- whole_tumor
+  included regions: ['necrotic_tumor_core', 'peritumoral_edema', 'enhancing_tumor']
+  voxel count: 211751
+  volume mm3: 211751.0
+  volume ml: 211.75100000000003
+- tumor_core
+  included regions: ['necrotic_tumor_core', 'enhancing_tumor']
+  voxel count: 43159
+  volume mm3: 43159.0
+  volume ml: 43.159
+
+Important note:
+This summary is derived from a provided tumor segmentation mask. It is for educational RAG demonstration only and is not a clinical diagnosis.
+
+RETRIEVED KNOWLEDGE CONTEXT
+================================================================================
+RETRIEVAL QUERY
+================================================================================
+Explain this segmented glioblastoma MRI case. Retrieve context about T1, contrast-enhanced T1 or T1-Gd, T2, FLAIR, tumor segmentation labels, segmentation-derived tumor volumes, whole tumor, tumor core, and safety limitations. The tumor regions in this case are: necrotic_tumor_core, peritumoral_edema, enhancing_tumor.
+
+RETRIEVED CONTEXT
+================================================================================
+[Chunk 1] Source: 03_tumor_segmentation_labels.md
+--------------------------------------------------------------------------------
+## Peritumoral edema
+
+The peritumoral edema label represents abnormal tissue around the tumor region, often associated with edema or infiltrative tumor-related signal change.
+
+In many MRI workflows, FLAIR and T2 are important for understanding edema-like abnormality.
+
+## Enhancing tumor
+
+The enhancing tumor label represents tumor tissue that shows contrast enhancement.
+
+This region is conceptually related to contrast-enhanced T1 imaging.
+
+## Useful derived tumor groups
+
+The project can calculate larger grouped regions from the segmentation labels.
+
+Whole tumor:
+
+necrotic_tumor_core + peritumoral_edema + enhancing_tumor
+
+Tumor core:
+
+necrotic_tumor_core + enhancing_tumor
+
+[Chunk 2] Source: 01_mri_sequences.md
+--------------------------------------------------------------------------------
+# MRI sequences used in this project
+
+This project uses a real glioblastoma MRI case with multiple MRI sequences.
+
+MRI is the broad imaging modality. Within MRI, different acquisition settings create different image contrasts. In brain tumor datasets, these different MRI sequences are often called modalities.
+
+The four MRI sequences used in this project are:
+
+- T1-weighted MRI
+- contrast-enhanced T1-weighted MRI, also called T1-Gd or T1gd
+- T2-weighted MRI
+- FLAIR MRI
+
+The segmentation mask is separate from these MRI images. The MRI files contain intensity values. The segmentation file contains integer labels for tumor regions.
+
+## T1-weighted MRI
+
+[Chunk 3] Source: 01_mri_sequences.md
+--------------------------------------------------------------------------------
+This helps peritumoral abnormality stand out more clearly in many brain tumor cases.
+
+## Segmentation mask
+
+The segmentation mask is not an MRI intensity image.
+
+It is a label map.
+
+Each voxel contains an integer label such as:
+
+- 0 = background
+- 1 = necrotic tumor core
+- 2 = peritumoral edema
+- 3 = enhancing tumor
+
+The case summary in this project is computed from the segmentation mask.
+
+[Chunk 4] Source: 06_limitations_and_safety.md
+--------------------------------------------------------------------------------
+# Limitations and safety notes
+
+This project is for educational and research demonstration purposes.
+
+It is not a clinical diagnostic system.
+
+## Segmentation-derived summary
+
+The tumor measurements are derived from a pre-existing segmentation mask.
+
+The repository does not train a segmentation model.
+
+The repository does not verify whether the segmentation is clinically correct.
+
+## MRI intensity limitations
+
+MRI intensity values are not directly comparable across scanners, acquisition protocols, or preprocessing pipelines without careful normalization and quality control.
+
+This first version focuses on segmentation-derived measurements rather than intensity-based biomarkers.
+
+[Chunk 5] Source: 01_mri_sequences.md
+--------------------------------------------------------------------------------
+## T1-weighted MRI
+
+T1-weighted MRI is useful for anatomical structure.
+
+Simple memory:
+
+T1 = anatomy-focused image
+
+In brain MRI, T1 provides structural reference. It helps locate anatomy and gives context for where the tumor is positioned.
+
+## T1-Gd / contrast-enhanced T1
+
+T1-Gd means T1-weighted MRI after gadolinium contrast.
+
+Simple memory:
+
+T1-Gd = enhancement image
+
+Tumor regions with contrast enhancement may appear more visible on T1-Gd. Enhancing tumor labels are conceptually related to contrast-enhanced T1 images.
+
+In the downloaded files, this appears as:
+
+sub-002_ce-gd_T1w.nii.gz
+
+In this project, it is renamed as:
+
+case_001_t1gd.nii.gz
+
+## T2-weighted MRI
