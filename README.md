@@ -15,7 +15,7 @@ This is not a diagnostic system. It is a small, transparent prototype showing ho
 
 ## Project idea
 
-Medical imaging AI does not stop at segmentation. A segmentation mask still has to be converted into information that a human can inspect:
+Medical imaging AI does not stop at segmentation. A segmentation mask still has to be converted into information that a human can inspect and interpret:
 
 * Which tumor regions are present?
 * What is the volume of each segmented region?
